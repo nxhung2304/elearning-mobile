@@ -1,17 +1,25 @@
 # elearning_mobile
 
-A new Flutter project.
+- Flutter app (iOS + Android) for an Elearning system.
+- Backend at https://github.com/nxhung2304/elearning (Rails API).
+
+## Tech stack
+- State manager: Riverpod
+- Routing: go_router
+- HTTP Client: Dio
+
+## Architecture
+Feature-first + Clean Architecture, 3 layers per feature:
+- `ui/` — View / ViewModel
+- `domain/` — Entities, repository abstracts, use cases
+- `data/` — API clients, DTO/models, repository implementations, data sources
+
+## Docs
+- Project conventions: [CLAUDE.md](./CLAUDE.md)
+- MVP screens checklist: [specs/story.md](./specs/story.md)
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+fvm flutter pub get
+fvm flutter run
+```
