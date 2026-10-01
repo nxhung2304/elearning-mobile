@@ -10,7 +10,7 @@
 
 ## Architecture
 Feature-first + Clean Architecture, 3 layers per feature:
-- `ui/` — View / ViewModel
+- `presentation/` — View / ViewModel
 - `domain/` — Entities, repository abstracts, use cases
 - `data/` — API clients, DTO/models, repository implementations, data sources
 
