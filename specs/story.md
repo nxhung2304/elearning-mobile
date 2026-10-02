@@ -1,7 +1,7 @@
 # MVP Mobile — Checklist theo thứ tự triển khai
 
 ## 1. Shared / Bootstrap
-- [ ] Splash / Auth check (route guard go_router)
+- [x] Splash / Auth check (route guard go_router)
 
 ## 2. Auth
 - [ ] Login
