@@ -1,5 +1,5 @@
 import 'package:elearning_mobile/app/router/app_path.dart';
-import 'package:elearning_mobile/features/auth/presentation/screens/login_screen.dart';
+import 'package:elearning_mobile/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:elearning_mobile/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:elearning_mobile/features/home/presentation/screens/home_screen.dart';
 import 'package:elearning_mobile/features/splash/presentation/screens/splash_screen.dart';
@@ -11,8 +11,8 @@ final List<RouteBase> routes = [
     builder: (context, state) => const SplashScreen(),
   ),
   GoRoute(
-    path: AppPath.login,
-    builder: (context, state) => const LoginScreen(),
+    path: AppPath.signIn,
+    builder: (context, state) => const SignInScreen(),
   ),
   GoRoute(
     path: AppPath.signUp,

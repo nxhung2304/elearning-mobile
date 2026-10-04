@@ -38,16 +38,17 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
 
   if (authState.hasError) {
     final isOnAuthGate =
-        location == AppPath.login || location == AppPath.signUp;
-    return isOnAuthGate ? null : AppPath.login;
+        location == AppPath.signIn || location == AppPath.signUp;
+    return isOnAuthGate ? null : AppPath.signIn;
   }
 
   if (authState.value == AuthStatus.authenticated) {
     final isOnAuthGate =
-        location == AppPath.login || location == AppPath.signUp;
+        location == AppPath.signIn || location == AppPath.signUp;
     return isOnAuthGate ? AppPath.home : null;
   }
 
-  final isOnAuthGate = location == AppPath.login || location == AppPath.signUp;
-  return isOnAuthGate ? null : AppPath.login;
+  final isOnAuthGate =
+      location == AppPath.signIn || location == AppPath.signUp;
+  return isOnAuthGate ? null : AppPath.signIn;
 }

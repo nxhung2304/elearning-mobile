@@ -2,8 +2,8 @@ import 'package:elearning_mobile/app/router/app_path.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Login'),
+            const Text('Sign In'),
             TextButton(
               onPressed: () => context.push(AppPath.signUp),
               child: const Text('Create an account'),
