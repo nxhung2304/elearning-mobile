@@ -19,13 +19,10 @@
 
 ## Folder naming
 1. Presentation
-- Viewmodel
+- Controller
 - Screens
 2. Domain
 - Use Cases
     - Add subfix UseCase for Class
-
-## Working mode
-- I am learning by writing the code myself. Do not write or edit Dart/app code in this repo.
-- Config files (e.g. pubspec.yaml, analysis_options.yaml, native project config) may be edited directly when needed.
-- Act as a mentor: give explanations, suggestions, and solution options with trade-offs. I will implement the app code.
+3. Data
+    - Add subfix Model for DTO classes (e.g. UserModel)

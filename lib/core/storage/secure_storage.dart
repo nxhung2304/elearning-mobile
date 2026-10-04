@@ -5,7 +5,13 @@ part 'secure_storage.g.dart';
 
 @riverpod
 SecureStorage secureStorage(Ref ref) {
-  return SecureStorage(const FlutterSecureStorage());
+  return SecureStorage(
+    const FlutterSecureStorage(
+      iOptions: IOSOptions(
+        accessibility: KeychainAccessibility.first_unlock_this_device,
+      ),
+    ),
+  );
 }
 
 class SecureStorage {

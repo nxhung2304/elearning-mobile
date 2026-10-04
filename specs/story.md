@@ -4,8 +4,8 @@
 - [x] Splash / Auth check (route guard go_router)
 
 ## 2. Auth
+- [x] Register
 - [ ] Login
-- [ ] Register
 
 ## 3. Course browsing
 - [ ] Home / Course list (filter: category, level, search)
@@ -18,6 +18,7 @@
 ## 5. Profile
 - [ ] Profile view
 - [ ] Profile edit
+- [ ] Logout
 
 ## 6. Enrollment & Progress (chỉ làm nếu backend có API cùng Week 24-25)
 - [ ] My enrolled courses

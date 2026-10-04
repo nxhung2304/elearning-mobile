@@ -27,4 +27,8 @@ class AuthLocalDataSource {
       return AuthStatus.unauthenticated;
     }
   }
+
+  Future<void> saveAccessToken(String token) async {
+    await _secureStorage.write(key: _accessTokenKey, value: token);
+  }
 }

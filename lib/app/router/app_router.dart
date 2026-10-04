@@ -2,7 +2,7 @@ import 'package:elearning_mobile/app/router/app_path.dart';
 import 'package:elearning_mobile/app/router/go_router_refresh_notifier.dart';
 import 'package:elearning_mobile/app/router/routes.dart';
 import 'package:elearning_mobile/features/auth/domain/entities/auth_status.dart';
-import 'package:elearning_mobile/features/auth/ui/viewmodel/auth_state.dart';
+import 'package:elearning_mobile/features/auth/presentation/viewmodel/auth_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -37,14 +37,17 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
   }
 
   if (authState.hasError) {
-    return location == AppPath.login ? null : AppPath.login;
+    final isOnAuthGate =
+        location == AppPath.login || location == AppPath.signUp;
+    return isOnAuthGate ? null : AppPath.login;
   }
 
   if (authState.value == AuthStatus.authenticated) {
     final isOnAuthGate =
-        location == AppPath.login || location == AppPath.splash;
+        location == AppPath.login || location == AppPath.signUp;
     return isOnAuthGate ? AppPath.home : null;
   }
 
-  return location == AppPath.login ? null : AppPath.login;
+  final isOnAuthGate = location == AppPath.login || location == AppPath.signUp;
+  return isOnAuthGate ? null : AppPath.login;
 }
