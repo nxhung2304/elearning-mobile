@@ -1,6 +1,7 @@
 import 'package:elearning_mobile/core/result.dart';
 import 'package:elearning_mobile/features/auth/domain/entities/auth_session.dart';
 import 'package:elearning_mobile/features/auth/domain/usecases/sign_up_use_case.dart';
+import 'package:elearning_mobile/features/auth/presentation/viewmodel/auth_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sign_up_controller.g.dart';
@@ -30,6 +31,7 @@ class SignUpController extends _$SignUpController {
       switch (result) {
         case Ok(value: final session):
           state = AsyncValue.data(session);
+          ref.invalidate(authStateProvider);
         case Error(error: final e):
           state = AsyncValue.error(e, StackTrace.current);
       }

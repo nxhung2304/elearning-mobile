@@ -41,7 +41,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(const SnackBar(content: Text('Sign Up Successful!')));
-          context.pop();
         },
       );
     });
