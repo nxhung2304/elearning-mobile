@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:elearning_mobile/app/logger/app_logger.dart';
+import 'package:elearning_mobile/core/config/api_config.dart';
 import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/exceptions/network_exception.dart';
 import 'package:elearning_mobile/core/exceptions/unauthorized_exception.dart';
@@ -21,10 +22,7 @@ class ApiClient {
           dio ??
           Dio(
             BaseOptions(
-              baseUrl: const String.fromEnvironment(
-                'API_BASE_URL',
-                defaultValue: 'http://localhost:3000/api/v1',
-              ),
+              baseUrl: ApiConfig.baseUrl,
               connectTimeout: const Duration(seconds: 10),
               receiveTimeout: const Duration(seconds: 10),
               headers: {
@@ -39,7 +37,7 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      return _dio.get<T>(path, queryParameters: queryParameters);
+      return await _dio.get<T>(path, queryParameters: queryParameters);
     } on DioException catch (e) {
       throw _mapDioException(e);
     }
@@ -67,7 +65,11 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      return _dio.patch<T>(path, queryParameters: queryParameters, data: data);
+      return await _dio.patch<T>(
+        path,
+        queryParameters: queryParameters,
+        data: data,
+      );
     } on DioException catch (e) {
       throw _mapDioException(e);
     }
@@ -79,7 +81,11 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      return _dio.delete<T>(path, queryParameters: queryParameters, data: data);
+      return await _dio.delete<T>(
+        path,
+        queryParameters: queryParameters,
+        data: data,
+      );
     } on DioException catch (e) {
       throw _mapDioException(e);
     }

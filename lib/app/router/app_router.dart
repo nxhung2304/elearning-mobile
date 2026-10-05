@@ -45,7 +45,8 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
   if (authState.value == AuthStatus.authenticated) {
     final isOnAuthGate =
         location == AppPath.signIn || location == AppPath.signUp;
-    return isOnAuthGate ? AppPath.home : null;
+    final shouldGoHome = isOnAuthGate || location == AppPath.splash;
+    return shouldGoHome ? AppPath.home : null;
   }
 
   final isOnAuthGate =

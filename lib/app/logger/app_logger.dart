@@ -1,13 +1,15 @@
-import 'dart:developer' as developer;
+import 'package:flutter/material.dart';
 
 class AppLogger {
   static void error(Object error, [StackTrace? stackTrace]) {
-    developer.log(
-      error.toString(),
-      name: 'AppError',
-      error: error,
-      stackTrace: stackTrace,
-      level: 1000,
-    );
+    if (stackTrace == null) {
+      debugPrint(error.toString());
+      return;
+    }
+    debugPrintStack(label: error.toString(), stackTrace: stackTrace);
+  }
+
+  static void info(String message) {
+    debugPrint(message);
   }
 }
