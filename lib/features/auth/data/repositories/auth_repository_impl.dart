@@ -24,7 +24,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._localDataSource, this._remoteDataSource);
 
   @override
-  Future<AuthStatus> getAuthStatus() {
+  Future<AuthStatus> getAuthStatus() async {
+    await _localDataSource.clearTokenOnFreshInstall();
     return _localDataSource.getAuthStatus();
   }
 

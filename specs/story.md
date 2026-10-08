@@ -5,6 +5,8 @@
 
 ## 2. Auth
 - [x] Register
+    - [x] After re-install app, remove token in flutter_secure_storage
+    - [ ] Validate validate expiration in flutter_secure_storage
 - [ ] Login
 
 ## 3. Course browsing
