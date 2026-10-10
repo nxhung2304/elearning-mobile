@@ -15,7 +15,7 @@ AuthRemoteDataSource authRemoteDataSource(Ref ref) {
 }
 
 class AuthRemoteDataSource {
-  static const String signUpEndpoint = '/sign_up';
+  static const String signUpEndpoint = '/auth/sign_up';
   static const int successStatusCode = 201;
 
   final ApiClient _apiClient;
