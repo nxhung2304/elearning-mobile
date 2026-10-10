@@ -5,6 +5,8 @@ import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/exceptions/network_exception.dart';
 import 'package:elearning_mobile/core/exceptions/unauthorized_exception.dart';
 import 'package:elearning_mobile/core/exceptions/validation_exception.dart';
+import 'package:elearning_mobile/core/network/interceptors/auth_interceptor.dart';
+import 'package:elearning_mobile/core/storage/auth_token_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,13 +14,13 @@ part 'api_client.g.dart';
 
 @riverpod
 ApiClient apiClient(Ref ref) {
-  return ApiClient();
+  return ApiClient(authTokenStorage: ref.watch(authTokenStorageProvider));
 }
 
 class ApiClient {
   final Dio _dio;
 
-  ApiClient({Dio? dio})
+  ApiClient({required AuthTokenStorage authTokenStorage, Dio? dio})
     : _dio =
           dio ??
           Dio(
@@ -45,6 +47,8 @@ class ApiClient {
         ),
       );
     }
+
+    _dio.interceptors.add(AuthInterceptor(authTokenStorage));
   }
 
   Future<Response<T>> get<T>(

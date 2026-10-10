@@ -55,4 +55,4 @@ final class AuthLocalDataSourceProvider
 }
 
 String _$authLocalDataSourceHash() =>
-    r'f5a4dce8fe337a7a4cadedc2b83ee708859ec7df';
+    r'39e1f66e7ded86b74c11ea9e5280510192bc7f03';

@@ -2,12 +2,13 @@
 
 ## 1. Shared / Bootstrap
 - [x] Splash / Auth check (route guard go_router)
+- [x] Bottom tabbar
 
 ## 2. Auth
 - [x] Register
     - [x] After re-install app, remove token in flutter_secure_storage
-    - [ ] Validate validate expiration in flutter_secure_storage
-- [ ] Login
+    - [x] Validate validate expiration in flutter_secure_storage
+- [x] Login
 
 ## 3. Course browsing
 - [ ] Home / Course list (filter: category, level, search)
@@ -20,7 +21,7 @@
 ## 5. Profile
 - [ ] Profile view
 - [ ] Profile edit
-- [ ] Logout
+- [x] Logout
 
 ## 6. Enrollment & Progress (chỉ làm nếu backend có API cùng Week 24-25)
 - [ ] My enrolled courses
