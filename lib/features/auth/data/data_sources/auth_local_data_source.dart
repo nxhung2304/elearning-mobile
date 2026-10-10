@@ -52,6 +52,16 @@ class AuthLocalDataSource {
     await _appSharedPreference.setBool(key: _hasLaunchedBeforeKey, value: true);
   }
 
+  Future<void> saveTokens({
+    required String accessToken,
+    required String refreshToken,
+    required int expiresIn,
+  }) async {
+    await saveAccessToken(accessToken);
+    await saveRefreshToken(refreshToken);
+    await saveExpiresIn(expiresIn);
+  }
+
   Future<void> saveAccessToken(String accessToken) async {
     await _secureStorage.write(key: _accessTokenKey, value: accessToken);
   }

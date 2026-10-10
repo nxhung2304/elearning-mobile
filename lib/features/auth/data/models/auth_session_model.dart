@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'auth_session_model.g.dart';
 
-@JsonSerializable(createJsonSchema: true)
+@JsonSerializable(createJsonSchema: true, fieldRename: FieldRename.snake)
 class AuthSessionModel {
   String accessToken;
   String refreshToken;

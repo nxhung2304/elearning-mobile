@@ -41,7 +41,33 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     switch (result) {
       case Ok(value: final session):
-        await _localDataSource.saveAccessToken(session.token);
+        await _localDataSource.saveTokens(
+          accessToken: session.accessToken,
+          refreshToken: session.refreshToken,
+          expiresIn: session.expiresIn,
+        );
+        return Result.ok(session);
+      case Error(error: final e):
+        return Result.error(e);
+    }
+  }
+
+  @override
+  Future<Result<AuthSessionModel>> signIn({
+    required String email,
+    required String password,
+  }) async {
+    final Result<AuthSessionModel> result = await _remoteDataSource.signIn(
+      email: email,
+      password: password,
+    );
+    switch (result) {
+      case Ok(value: final session):
+        await _localDataSource.saveTokens(
+          accessToken: session.accessToken,
+          refreshToken: session.refreshToken,
+          expiresIn: session.expiresIn,
+        );
         return Result.ok(session);
       case Error(error: final e):
         return Result.error(e);

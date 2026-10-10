@@ -2,7 +2,6 @@ import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/features/auth/presentation/controller/sign_up_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});

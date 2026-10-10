@@ -5,6 +5,7 @@ import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/exceptions/network_exception.dart';
 import 'package:elearning_mobile/core/exceptions/unauthorized_exception.dart';
 import 'package:elearning_mobile/core/exceptions/validation_exception.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'api_client.g.dart';
@@ -30,7 +31,21 @@ class ApiClient {
                 'Accept': 'application/json',
               },
             ),
-          );
+          ) {
+    if (kDebugMode) {
+      _dio.interceptors.add(
+        LogInterceptor(
+          request: true,
+          requestHeader: false,
+          requestBody: true,
+          responseHeader: false,
+          responseBody: true,
+          error: true,
+          logPrint: (object) => AppLogger.info(object.toString()),
+        ),
+      );
+    }
+  }
 
   Future<Response<T>> get<T>(
     String path, {

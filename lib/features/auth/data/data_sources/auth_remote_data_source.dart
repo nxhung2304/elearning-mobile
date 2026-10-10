@@ -16,7 +16,9 @@ AuthRemoteDataSource authRemoteDataSource(Ref ref) {
 
 class AuthRemoteDataSource {
   static const String signUpEndpoint = '/auth/sign_up';
-  static const int successStatusCode = 201;
+  static const String signInEndpoint = '/auth/sign_in';
+  static const int signUpSuccess = 201;
+  static const int signInSuccess = 200;
 
   final ApiClient _apiClient;
 
@@ -37,7 +39,27 @@ class AuthRemoteDataSource {
         },
       );
 
-      if (response.statusCode == successStatusCode) {
+      if (response.statusCode == signUpSuccess) {
+        return Result.ok(AuthSessionModel.fromJson(response.data));
+      } else {
+        return Result.error(HttpException('Invalid response'));
+      }
+    } on AppException catch (exception) {
+      return Result.error(exception);
+    }
+  }
+
+  Future<Result<AuthSessionModel>> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        signInEndpoint,
+        data: {'email': email, 'password': password},
+      );
+
+      if (response.statusCode == signInSuccess) {
         return Result.ok(AuthSessionModel.fromJson(response.data));
       } else {
         return Result.error(HttpException('Invalid response'));

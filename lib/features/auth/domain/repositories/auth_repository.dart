@@ -9,4 +9,8 @@ abstract class AuthRepository {
     required String password,
     required String confirmPassword,
   });
+  Future<Result<AuthSessionModel>> signIn({
+    required String email,
+    required String password,
+  });
 }
