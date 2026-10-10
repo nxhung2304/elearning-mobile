@@ -2,7 +2,6 @@ import 'package:elearning_mobile/core/result.dart';
 import 'package:elearning_mobile/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:elearning_mobile/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:elearning_mobile/features/auth/data/models/auth_session_model.dart';
-import 'package:elearning_mobile/features/auth/domain/entities/auth_session.dart';
 import 'package:elearning_mobile/features/auth/domain/entities/auth_status.dart';
 import 'package:elearning_mobile/features/auth/domain/repositories/auth_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -30,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<AuthSession>> signUp({
+  Future<Result<AuthSessionModel>> signUp({
     required String email,
     required String password,
     required String confirmPassword,
@@ -43,7 +42,7 @@ class AuthRepositoryImpl implements AuthRepository {
     switch (result) {
       case Ok(value: final session):
         await _localDataSource.saveAccessToken(session.token);
-        return Result.ok(session.toEntity());
+        return Result.ok(session);
       case Error(error: final e):
         return Result.error(e);
     }

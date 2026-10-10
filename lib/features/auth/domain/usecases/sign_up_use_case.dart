@@ -1,7 +1,7 @@
 import 'package:elearning_mobile/core/exceptions/validation_exception.dart';
 import 'package:elearning_mobile/core/result.dart';
 import 'package:elearning_mobile/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:elearning_mobile/features/auth/domain/entities/auth_session.dart';
+import 'package:elearning_mobile/features/auth/data/models/auth_session_model.dart';
 import 'package:elearning_mobile/features/auth/domain/repositories/auth_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -23,7 +23,7 @@ class SignUpUseCase {
 
   SignUpUseCase(this._authRepository);
 
-  Future<Result<AuthSession>> call({
+  Future<Result<AuthSessionModel>> call({
     required String email,
     required String password,
     required String confirmPassword,

@@ -16,6 +16,7 @@
     - presentation: screens / viewmodel
     - Domain: Entities, repository abtracts and use cases
     - Data: Api clients, service, DTO/models, repository implement and data sources
+- Entity vs Model: only split into a separate domain Entity and a data Model when there is business logic. Otherwise, use the Model directly across layers (e.g. AuthSessionModel).
 
 ## Folder naming
 1. Presentation

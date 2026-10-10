@@ -13,7 +13,7 @@ part of 'sign_up_controller.dart';
 final signUpControllerProvider = SignUpControllerProvider._();
 
 final class SignUpControllerProvider
-    extends $NotifierProvider<SignUpController, AsyncValue<AuthSession?>> {
+    extends $NotifierProvider<SignUpController, AsyncValue<AuthSessionModel?>> {
   SignUpControllerProvider._()
     : super(
         from: null,
@@ -33,28 +33,38 @@ final class SignUpControllerProvider
   SignUpController create() => SignUpController();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<AuthSession?> value) {
+  Override overrideWithValue(AsyncValue<AuthSessionModel?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<AuthSession?>>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<AuthSessionModel?>>(
+        value,
+      ),
     );
   }
 }
 
-String _$signUpControllerHash() => r'cc988d52f272015792efa691796cbd5842443cbe';
+String _$signUpControllerHash() => r'a4790f80fe6e581c28ab6e72a17d28cbcfedf285';
 
-abstract class _$SignUpController extends $Notifier<AsyncValue<AuthSession?>> {
-  AsyncValue<AuthSession?> build();
+abstract class _$SignUpController
+    extends $Notifier<AsyncValue<AuthSessionModel?>> {
+  AsyncValue<AuthSessionModel?> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final ref =
-        this.ref as $Ref<AsyncValue<AuthSession?>, AsyncValue<AuthSession?>>;
+        this.ref
+            as $Ref<
+              AsyncValue<AuthSessionModel?>,
+              AsyncValue<AuthSessionModel?>
+            >;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<AuthSession?>, AsyncValue<AuthSession?>>,
-              AsyncValue<AuthSession?>,
+              AnyNotifier<
+                AsyncValue<AuthSessionModel?>,
+                AsyncValue<AuthSessionModel?>
+              >,
+              AsyncValue<AuthSessionModel?>,
               Object?,
               Object?
             >;
