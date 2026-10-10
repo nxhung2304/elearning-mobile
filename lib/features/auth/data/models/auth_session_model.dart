@@ -5,10 +5,17 @@ part 'auth_session_model.g.dart';
 
 @JsonSerializable(createJsonSchema: true)
 class AuthSessionModel {
-  String token;
+  String accessToken;
+  String refreshToken;
+  int expiresIn;
   UserModel user;
 
-  AuthSessionModel({required this.token, required this.user});
+  AuthSessionModel({
+    required this.accessToken,
+    required this.refreshToken,
+    required this.expiresIn,
+    required this.user,
+  });
 
   factory AuthSessionModel.fromJson(Map<String, dynamic> json) =>
       _$AuthSessionModelFromJson(json);

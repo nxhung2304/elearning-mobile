@@ -15,6 +15,8 @@ AuthLocalDataSource authLocalDataSource(Ref ref) {
 
 class AuthLocalDataSource {
   static const _accessTokenKey = 'access_token';
+  static const _refreshTokenKey = 'refresh_token';
+  static const _expiresInKey = 'expires_in';
   static const _hasLaunchedBeforeKey = 'has_launched_before';
 
   final SecureStorage _secureStorage;
@@ -24,9 +26,15 @@ class AuthLocalDataSource {
 
   Future<AuthStatus> getAuthStatus() async {
     try {
-      final token = await _secureStorage.read(key: _accessTokenKey);
+      final accessToken = await _secureStorage.read(key: _accessTokenKey);
+      final refreshToken = await _secureStorage.read(key: _refreshTokenKey);
 
-      if (token == null || token.isEmpty) return AuthStatus.unauthenticated;
+      if (accessToken == null || accessToken.isEmpty) {
+        return AuthStatus.unauthenticated;
+      }
+      if (refreshToken == null || refreshToken.isEmpty) {
+        return AuthStatus.unauthenticated;
+      }
 
       return AuthStatus.authenticated;
     } catch (e) {
@@ -40,10 +48,19 @@ class AuthLocalDataSource {
     if (hasLaunchedBefore) return;
 
     await _secureStorage.delete(key: _accessTokenKey);
+    await _secureStorage.delete(key: _refreshTokenKey);
     await _appSharedPreference.setBool(key: _hasLaunchedBeforeKey, value: true);
   }
 
-  Future<void> saveAccessToken(String token) async {
-    await _secureStorage.write(key: _accessTokenKey, value: token);
+  Future<void> saveAccessToken(String accessToken) async {
+    await _secureStorage.write(key: _accessTokenKey, value: accessToken);
+  }
+
+  Future<void> saveRefreshToken(String refreshToken) async {
+    await _secureStorage.write(key: _refreshTokenKey, value: refreshToken);
+  }
+
+  Future<void> saveExpiresIn(int expiresIn) async {
+    await _secureStorage.write(key: _expiresInKey, value: expiresIn.toString());
   }
 }
