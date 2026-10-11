@@ -10,6 +10,9 @@
 ## Relationship
 - Backend repository at ../elearning
 
+## Design
+- See at ./specs/design
+
 ## Architecture
 - Use feature-first structure
 - It will have 3 layer:
