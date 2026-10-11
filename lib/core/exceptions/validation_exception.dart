@@ -7,4 +7,7 @@ class ValidationException implements AppException {
 
   @override
   String get message => errors.join('\n');
+
+  @override
+  String toString() => message;
 }
