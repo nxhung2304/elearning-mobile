@@ -9,6 +9,7 @@
     - [x] After re-install app, remove token in flutter_secure_storage
     - [x] Validate validate expiration in flutter_secure_storage
 - [x] Login
+- [ ] Auto refresh token see at [refresh_token](./refresh_token.md)
 
 ## 3. Course browsing
 - [ ] Home / Course list (filter: category, level, search)

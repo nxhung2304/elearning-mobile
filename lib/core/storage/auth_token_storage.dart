@@ -75,16 +75,11 @@ class AuthTokenStorage {
   Future<bool> isValidTokens() async {
     final accessToken = await getAccessToken();
     final refreshToken = await getRefreshToken();
-    final isValidExpiresIn = await validExpiresIn();
 
     if (accessToken == null || accessToken.isEmpty) {
       return false;
     }
     if (refreshToken == null || refreshToken.isEmpty) {
-      return false;
-    }
-
-    if (!isValidExpiresIn) {
       return false;
     }
 

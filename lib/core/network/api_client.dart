@@ -6,6 +6,7 @@ import 'package:elearning_mobile/core/exceptions/network_exception.dart';
 import 'package:elearning_mobile/core/exceptions/unauthorized_exception.dart';
 import 'package:elearning_mobile/core/exceptions/validation_exception.dart';
 import 'package:elearning_mobile/core/network/interceptors/auth_interceptor.dart';
+import 'package:elearning_mobile/core/network/session_expired_signal.dart';
 import 'package:elearning_mobile/core/storage/auth_token_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,13 +15,21 @@ part 'api_client.g.dart';
 
 @riverpod
 ApiClient apiClient(Ref ref) {
-  return ApiClient(authTokenStorage: ref.watch(authTokenStorageProvider));
+  return ApiClient(
+    authTokenStorage: ref.watch(authTokenStorageProvider),
+    onSessionExpired: () =>
+        ref.read(sessionExpiredSignalProvider.notifier).notify(),
+  );
 }
 
 class ApiClient {
   final Dio _dio;
 
-  ApiClient({required AuthTokenStorage authTokenStorage, Dio? dio})
+  ApiClient({
+    required AuthTokenStorage authTokenStorage,
+    required void Function() onSessionExpired,
+    Dio? dio,
+  })
     : _dio =
           dio ??
           Dio(
@@ -48,7 +57,13 @@ class ApiClient {
       );
     }
 
-    _dio.interceptors.add(AuthInterceptor(authTokenStorage));
+    _dio.interceptors.add(
+      AuthInterceptor(
+        Dio(_dio.options.copyWith()),
+        authTokenStorage,
+        onSessionExpired,
+      ),
+    );
   }
 
   Future<Response<T>> get<T>(
