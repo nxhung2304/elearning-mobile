@@ -3,13 +3,14 @@
 ## 1. Shared / Bootstrap
 - [x] Splash / Auth check (route guard go_router)
 - [x] Bottom tabbar
+- [ ] Setup flavor
 
 ## 2. Auth
 - [x] Register
     - [x] After re-install app, remove token in flutter_secure_storage
     - [x] Validate validate expiration in flutter_secure_storage
 - [x] Login
-- [ ] Auto refresh token see at [refresh_token](./refresh_token.md)
+- [x] Auto refresh token
 
 ## 3. Course browsing
 - [ ] Home / Course list (filter: category, level, search)

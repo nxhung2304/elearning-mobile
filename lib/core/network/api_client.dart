@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:elearning_mobile/app/logger/app_logger.dart';
-import 'package:elearning_mobile/core/config/api_config.dart';
+import 'package:elearning_mobile/core/config/env_config.dart';
 import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/exceptions/network_exception.dart';
 import 'package:elearning_mobile/core/exceptions/unauthorized_exception.dart';
@@ -29,20 +29,19 @@ class ApiClient {
     required AuthTokenStorage authTokenStorage,
     required void Function() onSessionExpired,
     Dio? dio,
-  })
-    : _dio =
-          dio ??
-          Dio(
-            BaseOptions(
-              baseUrl: ApiConfig.baseUrl,
-              connectTimeout: const Duration(seconds: 10),
-              receiveTimeout: const Duration(seconds: 10),
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-              },
-            ),
-          ) {
+  }) : _dio =
+           dio ??
+           Dio(
+             BaseOptions(
+               baseUrl: EnvConfig.apiUrl,
+               connectTimeout: const Duration(seconds: 10),
+               receiveTimeout: const Duration(seconds: 10),
+               headers: {
+                 'Content-Type': 'application/json',
+                 'Accept': 'application/json',
+               },
+             ),
+           ) {
     if (kDebugMode) {
       _dio.interceptors.add(
         LogInterceptor(
