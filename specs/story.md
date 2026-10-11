@@ -3,7 +3,7 @@
 ## 1. Shared / Bootstrap
 - [x] Splash / Auth check (route guard go_router)
 - [x] Bottom tabbar
-- [ ] Setup flavor
+- [x] Setup flavor
 
 ## 2. Auth
 - [x] Register
@@ -11,7 +11,7 @@
     - [x] Validate validate expiration in flutter_secure_storage
 - [x] Login
 - [x] Auto refresh token
-- [ ] Forgot password
+- [x] Forgot password
 - [ ] Vertify code
 - [ ] Reset password
 
