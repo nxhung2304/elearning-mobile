@@ -43,7 +43,7 @@ final class SignInControllerProvider
   }
 }
 
-String _$signInControllerHash() => r'a50e965021fb9db6346f21f053bca08f6173fa76';
+String _$signInControllerHash() => r'121d88fe560753326b5e8ae2ffc85b3bd0f94657';
 
 abstract class _$SignInController
     extends $Notifier<AsyncValue<AuthSessionModel?>> {

@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:elearning_mobile/app/router/app_path.dart';
 import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/theme/app_colors.dart';
+import 'package:elearning_mobile/core/validators/email_validator.dart';
+import 'package:elearning_mobile/core/validators/password_validator.dart';
 import 'package:elearning_mobile/features/auth/presentation/controller/sign_in_controller.dart';
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_line_text_field.dart';
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_mini_link.dart';
@@ -13,6 +15,7 @@ import 'package:go_router/go_router.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
+
   @override
   ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
@@ -21,12 +24,26 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _obscurePassword = true;
+  String? _emailError;
+  String? _passwordError;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  void _onEmailChanged(String value) {
+    if (_emailError != null && EmailValidator.isValid(value)) {
+      setState(() => _emailError = null);
+    }
+  }
+
+  void _onPasswordChanged(String value) {
+    if (_passwordError != null && PasswordValidator.isValid(value)) {
+      setState(() => _passwordError = null);
+    }
   }
 
   @override
@@ -79,12 +96,16 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 label: 'Email',
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
+                onChanged: _onEmailChanged,
+                errorText: _emailError,
               ),
               const SizedBox(height: 22),
               AuthLineTextField(
                 label: 'Mật khẩu',
                 controller: passwordController,
                 obscureText: _obscurePassword,
+                onChanged: _onPasswordChanged,
+                errorText: _passwordError,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 6),
@@ -97,7 +118,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       },
                       child: AuthMiniLink(_obscurePassword ? 'Hiện' : 'Ẩn'),
                     ),
-                    const AuthMiniLink('Quên mật khẩu?'),
+                    GestureDetector(
+                      onTap: () => context.push(AppPath.forgotPassword),
+                      child: const AuthMiniLink('Quên mật khẩu?'),
+                    ),
                   ],
                 ),
               ),
@@ -198,6 +222,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     String email,
     String password,
   ) {
+    setState(() {
+      _emailError = EmailValidator.isValid(email) ? null : 'Email không hợp lệ';
+      _passwordError = PasswordValidator.isValid(password)
+          ? null
+          : 'Mật khẩu tối thiểu ${PasswordValidator.minLength} ký tự';
+    });
+
+    if (_emailError != null || _passwordError != null) return;
+
     signInController.signIn(email: email, password: password);
   }
 }

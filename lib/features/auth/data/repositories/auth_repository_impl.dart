@@ -88,4 +88,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
     return Result.ok(null);
   }
+
+  @override
+  Future<Result<void>> forgotPassword({required String email}) async {
+    await _remoteDataSource.forgotPassword(email: email);
+
+    return Result.ok(null);
+  }
 }

@@ -9,6 +9,7 @@ class AuthLineTextField extends StatelessWidget {
     this.keyboardType,
     this.obscureText = false,
     this.onChanged,
+    this.errorText,
   });
 
   final String label;
@@ -16,9 +17,11 @@ class AuthLineTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool obscureText;
   final ValueChanged<String>? onChanged;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
+    final hasError = errorText != null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,13 +48,26 @@ class AuthLineTextField extends StatelessWidget {
               borderSide: BorderSide(color: AppColors.paperLine, width: 1.5),
             ),
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.paperLine, width: 1.5),
+              borderSide: BorderSide(
+                color: hasError ? AppColors.brick : AppColors.paperLine,
+                width: hasError ? 2 : 1.5,
+              ),
             ),
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.ink, width: 2),
+              borderSide: BorderSide(
+                color: hasError ? AppColors.brick : AppColors.ink,
+                width: 2,
+              ),
             ),
           ),
         ),
+        if (hasError) ...[
+          const SizedBox(height: 6),
+          Text(
+            errorText!,
+            style: TextStyle(fontSize: 11.5, color: AppColors.brick),
+          ),
+        ],
       ],
     );
   }

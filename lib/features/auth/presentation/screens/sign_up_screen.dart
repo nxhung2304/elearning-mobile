@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:elearning_mobile/app/router/app_path.dart';
 import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/theme/app_colors.dart';
+import 'package:elearning_mobile/core/validators/email_validator.dart';
+import 'package:elearning_mobile/core/validators/password_validator.dart';
 import 'package:elearning_mobile/features/auth/presentation/controller/sign_up_controller.dart';
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_line_text_field.dart';
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_password_strength_meter.dart';
@@ -23,6 +25,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final confirmPasswordController = TextEditingController();
   bool _agreedToTerms = false;
   int _passwordStrength = 0;
+  String? _emailError;
+  String? _passwordError;
+  String? _confirmPasswordError;
 
   @override
   void dispose() {
@@ -32,12 +37,29 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     super.dispose();
   }
 
+  void _onEmailChanged(String value) {
+    if (_emailError != null && EmailValidator.isValid(value)) {
+      setState(() => _emailError = null);
+    }
+  }
+
   void _onPasswordChanged(String value) {
-    setState(
-      () => _passwordStrength = AuthPasswordStrengthMeter.calculateStrength(
-        value,
-      ),
-    );
+    setState(() {
+      _passwordStrength = AuthPasswordStrengthMeter.calculateStrength(value);
+      if (_passwordError != null && PasswordValidator.isValid(value)) {
+        _passwordError = null;
+      }
+      if (_confirmPasswordError != null &&
+          value == confirmPasswordController.text) {
+        _confirmPasswordError = null;
+      }
+    });
+  }
+
+  void _onConfirmPasswordChanged(String value) {
+    if (_confirmPasswordError != null && value == passwordController.text) {
+      setState(() => _confirmPasswordError = null);
+    }
   }
 
   @override
@@ -104,6 +126,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 label: 'Email',
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
+                onChanged: _onEmailChanged,
+                errorText: _emailError,
               ),
               const SizedBox(height: 22),
               AuthLineTextField(
@@ -111,6 +135,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 controller: passwordController,
                 obscureText: true,
                 onChanged: _onPasswordChanged,
+                errorText: _passwordError,
               ),
               const SizedBox(height: 8),
               AuthPasswordStrengthMeter(strength: _passwordStrength),
@@ -119,6 +144,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 label: 'Xác nhận mật khẩu',
                 controller: confirmPasswordController,
                 obscureText: true,
+                onChanged: _onConfirmPasswordChanged,
+                errorText: _confirmPasswordError,
               ),
               const SizedBox(height: 22),
               GestureDetector(
@@ -246,6 +273,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     String password,
     String confirmPassword,
   ) {
+    setState(() {
+      _emailError = EmailValidator.isValid(email) ? null : 'Email không hợp lệ';
+      _passwordError = PasswordValidator.isValid(password)
+          ? null
+          : 'Mật khẩu tối thiểu ${PasswordValidator.minLength} ký tự';
+      _confirmPasswordError = confirmPassword == password
+          ? null
+          : 'Mật khẩu xác nhận không khớp';
+    });
+
+    if (_emailError != null ||
+        _passwordError != null ||
+        _confirmPasswordError != null) {
+      return;
+    }
+
     signUpController.signUp(
       email: email,
       password: password,

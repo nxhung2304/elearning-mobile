@@ -1,6 +1,9 @@
+import 'package:elearning_mobile/core/exceptions/validation_exception.dart';
 import 'package:elearning_mobile/core/result.dart';
+import 'package:elearning_mobile/core/validators/email_validator.dart';
+import 'package:elearning_mobile/core/validators/password_validator.dart';
 import 'package:elearning_mobile/features/auth/data/models/auth_session_model.dart';
-import 'package:elearning_mobile/features/auth/domain/usecases/sign_in_use_case.dart';
+import 'package:elearning_mobile/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:elearning_mobile/features/auth/presentation/viewmodel/auth_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,10 +19,28 @@ class SignInController extends _$SignInController {
   Future<void> signIn({required String email, required String password}) async {
     state = const AsyncValue.loading();
 
+    if (!EmailValidator.isValid(email)) {
+      state = AsyncValue.error(
+        ValidationException(['Invalid email address']),
+        StackTrace.current,
+      );
+      return;
+    }
+
+    if (!PasswordValidator.isValid(password)) {
+      state = AsyncValue.error(
+        ValidationException([
+          'Password must be at least ${PasswordValidator.minLength} characters',
+        ]),
+        StackTrace.current,
+      );
+      return;
+    }
+
     try {
       final result = await ref
-          .read(signInUseCaseProvider)
-          .call(email: email, password: password);
+          .read(authRepositoryProvider)
+          .signIn(email: email, password: password);
       switch (result) {
         case Ok(value: final session):
           state = AsyncValue.data(session);

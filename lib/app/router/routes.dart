@@ -1,5 +1,6 @@
 import 'package:elearning_mobile/app/router/app_path.dart';
 import 'package:elearning_mobile/app/shell/main_shell_screen.dart';
+import 'package:elearning_mobile/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:elearning_mobile/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:elearning_mobile/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:elearning_mobile/features/home/presentation/screens/home_screen.dart';
@@ -19,6 +20,10 @@ final List<RouteBase> routes = [
   GoRoute(
     path: AppPath.signUp,
     builder: (context, state) => const SignUpScreen(),
+  ),
+  GoRoute(
+    path: AppPath.forgotPassword,
+    builder: (context, state) => const ForgotPasswordScreen(),
   ),
   StatefulShellRoute.indexedStack(
     builder: (context, state, navigationShell) =>
