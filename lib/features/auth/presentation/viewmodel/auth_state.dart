@@ -8,8 +8,12 @@ part 'auth_state.g.dart';
 @riverpod
 class AuthState extends _$AuthState {
   @override
-  Future<AuthStatus> build() {
+  Future<AuthStatus> build() async {
     ref.watch(sessionExpiredSignalProvider);
-    return ref.watch(checkAuthStatusUseCaseProvider).call();
+    final results = await (
+      ref.watch(checkAuthStatusUseCaseProvider).call(),
+      Future.delayed(const Duration(milliseconds: 500)),
+    ).wait;
+    return results.$1;
   }
 }

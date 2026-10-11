@@ -11,6 +11,9 @@
     - [x] Validate validate expiration in flutter_secure_storage
 - [x] Login
 - [x] Auto refresh token
+- [ ] Forgot password
+- [ ] Vertify code
+- [ ] Reset password
 
 ## 3. Course browsing
 - [ ] Home / Course list (filter: category, level, search)
