@@ -4,9 +4,10 @@ import 'package:elearning_mobile/app.dart';
 import 'package:elearning_mobile/app/logger/app_logger.dart';
 import 'package:elearning_mobile/app/logger/app_provider_observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+Future<void> main() async {
   FlutterError.onError = (details) {
     AppLogger.error(details.exception, details.stack);
   };
@@ -14,6 +15,5 @@ void main() {
     AppLogger.error(error, stack);
     return true;
   };
-
   runApp(ProviderScope(observers: [AppProviderObserver()], child: const App()));
 }

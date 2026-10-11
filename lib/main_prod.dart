@@ -6,7 +6,7 @@ import 'main.dart' as common;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: '.env.prod');
+  await dotenv.load(fileName: 'assets/.env.prod');
 
-  common.main();
+  await common.main();
 }
