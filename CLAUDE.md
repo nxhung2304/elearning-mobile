@@ -11,7 +11,7 @@
 - Backend repository at ../elearning
 
 ## Design
-- See at ./specs/design
+- See at ./specs/designs
 
 ## Architecture
 - Use feature-first structure
