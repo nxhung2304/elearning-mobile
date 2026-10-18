@@ -116,11 +116,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       onTap: () {
                         setState(() => _obscurePassword = !_obscurePassword);
                       },
-                      child: AuthMiniLink(_obscurePassword ? 'Hiện' : 'Ẩn'),
+                      child: AuthMiniLink(
+                        text: _obscurePassword ? 'Hiện' : 'Ẩn',
+                      ),
                     ),
                     GestureDetector(
                       onTap: () => context.push(AppPath.forgotPassword),
-                      child: const AuthMiniLink('Quên mật khẩu?'),
+                      child: AuthMiniLink(text: 'Quên mật khẩu?'),
                     ),
                   ],
                 ),
@@ -149,7 +151,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             ),
                       child: const Text(
                         'Đăng nhập',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -176,14 +181,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 14),
                       child: Text(
                         'hoặc',
-                        style: TextStyle(fontSize: 12.5, color: AppColors.inkSoft),
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          color: AppColors.inkSoft,
+                        ),
                       ),
                     ),
                     Expanded(child: Divider(color: AppColors.paperLine)),
                   ],
                 ),
               ),
-              const SizedBox(width: double.infinity, child: AuthOutlineButton('Google')),
+              const SizedBox(
+                width: double.infinity,
+                child: AuthOutlineButton('Google'),
+              ),
               const SizedBox(height: 20),
               Center(
                 child: RichText(

@@ -32,4 +32,3 @@ final class Error<T> extends Result<T> {
   /// Returned error in result
   final Exception error;
 }
-

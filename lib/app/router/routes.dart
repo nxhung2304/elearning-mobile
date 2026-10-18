@@ -3,6 +3,7 @@ import 'package:elearning_mobile/app/shell/main_shell_screen.dart';
 import 'package:elearning_mobile/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:elearning_mobile/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:elearning_mobile/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:elearning_mobile/features/auth/presentation/screens/vertify_otp_screen.dart';
 import 'package:elearning_mobile/features/home/presentation/screens/home_screen.dart';
 import 'package:elearning_mobile/features/profile/presentation/screens/profile_screen.dart';
 import 'package:elearning_mobile/features/splash/presentation/screens/splash_screen.dart';
@@ -24,6 +25,13 @@ final List<RouteBase> routes = [
   GoRoute(
     path: AppPath.forgotPassword,
     builder: (context, state) => const ForgotPasswordScreen(),
+  ),
+  GoRoute(
+    path: AppPath.vertifyOtp,
+    builder: (context, state) {
+      final email = state.extra as String;
+      return VertifyOtpScreen(email: email);
+    },
   ),
   StatefulShellRoute.indexedStack(
     builder: (context, state, navigationShell) =>

@@ -15,4 +15,8 @@ abstract class AuthRepository {
   });
   Future<Result<void>> signOut();
   Future<Result<void>> forgotPassword({required String email});
+  Future<Result<void>> vertifyOtp({
+    required String email,
+    required String otpCode,
+  });
 }

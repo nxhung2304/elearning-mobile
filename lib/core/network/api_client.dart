@@ -134,7 +134,10 @@ class ApiClient {
     }
 
     if (statusCode == 422) {
-      return ValidationException(_extractErrors(e.response?.data));
+      return ValidationException(
+        _extractErrors(e.response?.data),
+        remainingAttempts: _extractRemainingAttempts(e.response?.data),
+      );
     }
 
     if (e.type == DioExceptionType.connectionError ||
@@ -146,12 +149,31 @@ class ApiClient {
     return NetworkException();
   }
 
+  int? _extractRemainingAttempts(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      final errors = data['errors'];
+
+      if (errors is List) {
+        for (final error in errors) {
+          if (error is Map && error['remaining_attempts'] is int) {
+            return error['remaining_attempts'] as int;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
   List<String> _extractErrors(dynamic data) {
     if (data is Map<String, dynamic>) {
       final errors = data['errors'];
 
       if (errors is List) {
-        return errors.map((e) => e.toString()).toList();
+        return errors
+            .map((e) => e is Map && e['message'] != null ? e['message'] : e)
+            .map((e) => e.toString())
+            .toList();
       }
     }
 

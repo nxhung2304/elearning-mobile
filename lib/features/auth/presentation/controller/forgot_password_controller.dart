@@ -1,8 +1,8 @@
 import 'package:elearning_mobile/core/exceptions/validation_exception.dart';
+import 'package:elearning_mobile/core/result.dart';
 import 'package:elearning_mobile/core/validators/email_validator.dart';
 import 'package:elearning_mobile/features/auth/data/models/auth_session_model.dart';
 import 'package:elearning_mobile/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:elearning_mobile/features/auth/presentation/viewmodel/auth_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'forgot_password_controller.g.dart';
@@ -26,8 +26,15 @@ class ForgotPasswordController extends _$ForgotPasswordController {
     }
 
     try {
-      await ref.read(authRepositoryProvider).forgotPassword(email: email);
-      state = AsyncValue.data(null);
+      final result = await ref
+          .read(authRepositoryProvider)
+          .forgotPassword(email: email);
+      switch (result) {
+        case Ok():
+          state = AsyncValue.data(null);
+        case Error(error: final e):
+          state = AsyncValue.error(e, StackTrace.current);
+      }
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }

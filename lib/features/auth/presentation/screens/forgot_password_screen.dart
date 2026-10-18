@@ -36,6 +36,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final forgotPasswordState = ref.watch(forgotPasswordControllerProvider);
 
     ref.listen(forgotPasswordControllerProvider, (previous, next) {
+      if (ModalRoute.of(context)?.isCurrent != true) return;
       next.whenOrNull(
         error: (error, stackTrace) {
           final text = error is AppException ? error.message : error.toString();
@@ -49,6 +50,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               content: Text('Mã xác nhận đã được gửi tới email của bạn.'),
             ),
           );
+          context.push(AppPath.vertifyOtp, extra: emailController.text.trim());
         },
       );
     });

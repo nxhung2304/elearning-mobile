@@ -40,7 +40,8 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
     final isOnAuthGate =
         location == AppPath.signIn ||
         location == AppPath.signUp ||
-        location == AppPath.forgotPassword;
+        location == AppPath.forgotPassword ||
+        location == AppPath.vertifyOtp;
     return isOnAuthGate ? null : AppPath.signIn;
   }
 
@@ -48,7 +49,8 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
     final isOnAuthGate =
         location == AppPath.signIn ||
         location == AppPath.signUp ||
-        location == AppPath.forgotPassword;
+        location == AppPath.forgotPassword ||
+        location == AppPath.vertifyOtp;
     final shouldGoHome = isOnAuthGate || location == AppPath.splash;
     return shouldGoHome ? AppPath.home : null;
   }
@@ -56,6 +58,7 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
   final isOnAuthGate =
       location == AppPath.signIn ||
       location == AppPath.signUp ||
-      location == AppPath.forgotPassword;
+      location == AppPath.forgotPassword ||
+      location == AppPath.vertifyOtp;
   return isOnAuthGate ? null : AppPath.signIn;
 }

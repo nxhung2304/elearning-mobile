@@ -19,6 +19,7 @@ class AuthRemoteDataSource {
   static const String signInEndpoint = '/auth/sign_in';
   static const String signOutEndpoint = '/auth/sign_out';
   static const String forgotPasswordEndpoint = '/auth/forgot_password';
+  static const String vertifyOtpEndpoint = '/auth/vertify_otp';
 
   static const int signUpSuccess = 201;
   static const int signInSuccess = 200;
@@ -98,7 +99,27 @@ class AuthRemoteDataSource {
         data: {'email': email},
       );
 
-      if (response.statusCode == successStatus) {
+      if (response.statusCode == 201) {
+        return Result.ok(null);
+      } else {
+        return Result.error(HttpException('Invalid response'));
+      }
+    } on AppException catch (exception) {
+      return Result.error(exception);
+    }
+  }
+
+  Future<Result<void>> vertifyOtp({
+    required String email,
+    required String otpCode,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        vertifyOtpEndpoint,
+        data: {'email': email, 'otp_code': otpCode},
+      );
+
+      if (response.statusCode == 201) {
         return Result.ok(null);
       } else {
         return Result.error(HttpException('Invalid response'));
