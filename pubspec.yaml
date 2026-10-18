@@ -43,6 +43,7 @@ dependencies:
   json_annotation: ^4.9.0
   shared_preferences: ^2.5.5
   flutter_dotenv: ^6.0.1
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -66,13 +67,9 @@ flutter:
     - assets/.env.prod
 
 flutter_native_splash:
-  color: "#EDF1F4"
-  image: assets/images/splash_logo_light.png
-  color_dark: "#233750"
-  image_dark: assets/images/splash_logo_dark.png
+  color: "#15223A"
+  image: assets/images/splash_logo_mark.png
 
   android_12:
-    color: "#EDF1F4"
-    image: assets/images/splash_logo_light_android12.png
-    color_dark: "#233750"
-    image_dark: assets/images/splash_logo_dark_android12.png
+    color: "#15223A"
+    image: assets/images/splash_logo_mark.png
