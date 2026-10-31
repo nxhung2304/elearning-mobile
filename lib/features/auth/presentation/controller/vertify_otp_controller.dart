@@ -1,4 +1,5 @@
 import 'package:elearning_mobile/core/result.dart';
+import 'package:elearning_mobile/features/auth/data/models/reset_password_model.dart';
 import 'package:elearning_mobile/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,7 +8,7 @@ part 'vertify_otp_controller.g.dart';
 @riverpod
 class VertifyOtpController extends _$VertifyOtpController {
   @override
-  AsyncValue<void> build() {
+  AsyncValue<ResetPasswordModel?> build() {
     return const AsyncValue.data(null);
   }
 
@@ -22,8 +23,8 @@ class VertifyOtpController extends _$VertifyOtpController {
           .read(authRepositoryProvider)
           .vertifyOtp(email: email, otpCode: otpCode);
       switch (result) {
-        case Ok():
-          state = const AsyncValue.data(null);
+        case Ok(value: ResetPasswordModel resetPasswordToken):
+          state = AsyncValue.data(resetPasswordToken);
         case Error(error: final e):
           state = AsyncValue.error(e, StackTrace.current);
       }

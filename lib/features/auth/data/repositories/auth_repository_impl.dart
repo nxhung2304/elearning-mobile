@@ -2,6 +2,7 @@ import 'package:elearning_mobile/core/result.dart';
 import 'package:elearning_mobile/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:elearning_mobile/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:elearning_mobile/features/auth/data/models/auth_session_model.dart';
+import 'package:elearning_mobile/features/auth/data/models/reset_password_model.dart';
 import 'package:elearning_mobile/features/auth/domain/entities/auth_status.dart';
 import 'package:elearning_mobile/features/auth/domain/repositories/auth_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -32,12 +33,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Result<AuthSessionModel>> signUp({
     required String email,
     required String password,
-    required String confirmPassword,
+    required String passwordConfirmation,
   }) async {
     final Result<AuthSessionModel> result = await _remoteDataSource.signUp(
       email: email,
       password: password,
-      confirmPassword: confirmPassword,
+      passwordConfirmation: passwordConfirmation,
     );
     switch (result) {
       case Ok(value: final session):
@@ -95,10 +96,36 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<void>> vertifyOtp({
+  Future<Result<ResetPasswordModel>> vertifyOtp({
     required String email,
     required String otpCode,
-  }) {
-    return _remoteDataSource.vertifyOtp(email: email, otpCode: otpCode);
+  }) async {
+    final Result<ResetPasswordModel> result = await _remoteDataSource
+        .vertifyOtp(email: email, otpCode: otpCode);
+    switch (result) {
+      case Ok(value: final resetPasswordToken):
+        return Result.ok(resetPasswordToken);
+      case Error(error: final e):
+        return Result.error(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> resetPassword({
+    required String resetPasswordToken,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    final Result<void> result = await _remoteDataSource.resetPassword(
+      resetPasswordToken: resetPasswordToken,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
+    );
+    switch (result) {
+      case Ok(value: final session):
+        return Result.ok(session);
+      case Error(error: final e):
+        return Result.error(e);
+    }
   }
 }

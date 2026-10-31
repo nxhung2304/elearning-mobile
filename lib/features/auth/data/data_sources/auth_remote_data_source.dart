@@ -4,6 +4,7 @@ import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/network/api_client.dart';
 import 'package:elearning_mobile/core/result.dart';
 import 'package:elearning_mobile/features/auth/data/models/auth_session_model.dart';
+import 'package:elearning_mobile/features/auth/data/models/reset_password_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_remote_data_source.g.dart';
@@ -20,11 +21,15 @@ class AuthRemoteDataSource {
   static const String signOutEndpoint = '/auth/sign_out';
   static const String forgotPasswordEndpoint = '/auth/forgot_password';
   static const String vertifyOtpEndpoint = '/auth/vertify_otp';
+  static const String resetPasswordEndpoint = '/auth/reset_password';
+
+  static const int success = 200;
 
   static const int signUpSuccess = 201;
-  static const int signInSuccess = 200;
-  static const int signOutSuccess = 200;
-  static const int successStatus = 200;
+  static const int signInSuccess = success;
+  static const int signOutSuccess = success;
+  static const int successStatus = success;
+  static const int resetPasswordSuccess = success;
 
   final ApiClient _apiClient;
 
@@ -33,7 +38,7 @@ class AuthRemoteDataSource {
   Future<Result<AuthSessionModel>> signUp({
     required String email,
     required String password,
-    required String confirmPassword,
+    required String passwordConfirmation,
   }) async {
     try {
       final response = await _apiClient.post(
@@ -41,7 +46,7 @@ class AuthRemoteDataSource {
         data: {
           'email': email,
           'password': password,
-          'password_confirmation': confirmPassword,
+          'password_confirmation': passwordConfirmation,
         },
       );
 
@@ -109,7 +114,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Result<void>> vertifyOtp({
+  Future<Result<ResetPasswordModel>> vertifyOtp({
     required String email,
     required String otpCode,
   }) async {
@@ -120,6 +125,31 @@ class AuthRemoteDataSource {
       );
 
       if (response.statusCode == 201) {
+        return Result.ok(ResetPasswordModel.fromJson(response.data));
+      } else {
+        return Result.error(HttpException('Invalid response'));
+      }
+    } on AppException catch (exception) {
+      return Result.error(exception);
+    }
+  }
+
+  Future<Result<void>> resetPassword({
+    required String resetPasswordToken,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        resetPasswordEndpoint,
+        data: {
+          'reset_password_token': resetPasswordToken,
+          'password': password,
+          'password_confirmation': passwordConfirmation,
+        },
+      );
+
+      if (response.statusCode == resetPasswordSuccess) {
         return Result.ok(null);
       } else {
         return Result.error(HttpException('Invalid response'));

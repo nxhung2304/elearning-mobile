@@ -14,6 +14,15 @@ class AuthState extends _$AuthState {
       ref.watch(checkAuthStatusUseCaseProvider).call(),
       Future.delayed(const Duration(milliseconds: 500)),
     ).wait;
+
     return results.$1;
+  }
+
+  void setUnauthenticated() {
+    state = const AsyncData(AuthStatus.unauthenticated);
+  }
+
+  void setAuthenticated() {
+    state = const AsyncData(AuthStatus.authenticated);
   }
 }

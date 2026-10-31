@@ -34,7 +34,7 @@ class _VertifyOtpScreenState extends ConsumerState<VertifyOtpScreen> {
   );
   final _otpFocusNodes = List.generate(_otpLength, (_) => FocusNode());
 
-  _initCooldownOtp() {
+  void _initCooldownOtp() {
     _timer?.cancel();
 
     _remainingSeconds = 5 * 60;
@@ -111,10 +111,24 @@ class _VertifyOtpScreenState extends ConsumerState<VertifyOtpScreen> {
             context,
           ).showSnackBar(SnackBar(content: Text(text)));
         },
-        data: (_) {
+        data: (model) {
+          final token = model?.resetPasswordToken;
+
+          if (token == null || token.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Không nhận được token đặt lại mật khẩu. Vui lòng thử lại.',
+                ),
+              ),
+            );
+            return;
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Xác nhận mã thành công.')),
           );
+          context.push(AppPath.resetPassword, extra: token);
         },
       );
     });

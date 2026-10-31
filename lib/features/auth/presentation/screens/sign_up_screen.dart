@@ -22,18 +22,18 @@ class SignUpScreen extends ConsumerStatefulWidget {
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final passwordConfirmationController = TextEditingController();
   bool _agreedToTerms = false;
   int _passwordStrength = 0;
   String? _emailError;
   String? _passwordError;
-  String? _confirmPasswordError;
+  String? _passwordConfirmationError;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    confirmPasswordController.dispose();
+    passwordConfirmationController.dispose();
     super.dispose();
   }
 
@@ -49,16 +49,17 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       if (_passwordError != null && PasswordValidator.isValid(value)) {
         _passwordError = null;
       }
-      if (_confirmPasswordError != null &&
-          value == confirmPasswordController.text) {
-        _confirmPasswordError = null;
+      if (_passwordConfirmationError != null &&
+          value == passwordConfirmationController.text) {
+        _passwordConfirmationError = null;
       }
     });
   }
 
   void _onConfirmPasswordChanged(String value) {
-    if (_confirmPasswordError != null && value == passwordController.text) {
-      setState(() => _confirmPasswordError = null);
+    if (_passwordConfirmationError != null &&
+        value == passwordController.text) {
+      setState(() => _passwordConfirmationError = null);
     }
   }
 
@@ -142,10 +143,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               const SizedBox(height: 22),
               AuthLineTextField(
                 label: 'Xác nhận mật khẩu',
-                controller: confirmPasswordController,
+                controller: passwordConfirmationController,
                 obscureText: true,
                 onChanged: _onConfirmPasswordChanged,
-                errorText: _confirmPasswordError,
+                errorText: _passwordConfirmationError,
               ),
               const SizedBox(height: 22),
               GestureDetector(
@@ -158,7 +159,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       height: 17,
                       margin: const EdgeInsets.only(top: 1),
                       decoration: BoxDecoration(
-                        color: _agreedToTerms ? AppColors.ink : Colors.transparent,
+                        color: _agreedToTerms
+                            ? AppColors.ink
+                            : Colors.transparent,
                         border: Border.all(color: AppColors.ink, width: 1.6),
                         borderRadius: BorderRadius.circular(3),
                       ),
@@ -170,7 +173,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     Expanded(
                       child: RichText(
                         text: TextSpan(
-                          style: TextStyle(fontSize: 13, color: AppColors.inkSoft),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppColors.inkSoft,
+                          ),
                           children: [
                             const TextSpan(text: 'Tôi đồng ý với '),
                             TextSpan(
@@ -210,11 +216,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               signUpController,
                               emailController.text,
                               passwordController.text,
-                              confirmPasswordController.text,
+                              passwordConfirmationController.text,
                             ),
                       child: const Text(
                         'Tạo tài khoản',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -271,28 +280,28 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     SignUpController signUpController,
     String email,
     String password,
-    String confirmPassword,
+    String passwordConfirmation,
   ) {
     setState(() {
       _emailError = EmailValidator.isValid(email) ? null : 'Email không hợp lệ';
       _passwordError = PasswordValidator.isValid(password)
           ? null
           : 'Mật khẩu tối thiểu ${PasswordValidator.minLength} ký tự';
-      _confirmPasswordError = confirmPassword == password
+      _passwordConfirmationError = passwordConfirmation == password
           ? null
           : 'Mật khẩu xác nhận không khớp';
     });
 
     if (_emailError != null ||
         _passwordError != null ||
-        _confirmPasswordError != null) {
+        _passwordConfirmationError != null) {
       return;
     }
 
     signUpController.signUp(
       email: email,
       password: password,
-      confirmPassword: confirmPassword,
+      passwordConfirmation: passwordConfirmation,
     );
   }
 }

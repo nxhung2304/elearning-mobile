@@ -19,7 +19,7 @@ class SignUpController extends _$SignUpController {
   Future<void> signUp({
     required String email,
     required String password,
-    required String confirmPassword,
+    required String passwordConfirmation,
   }) async {
     state = const AsyncValue.loading();
 
@@ -41,7 +41,7 @@ class SignUpController extends _$SignUpController {
       return;
     }
 
-    if (password != confirmPassword) {
+    if (password != passwordConfirmation) {
       state = AsyncValue.error(
         ValidationException(['Passwords do not match']),
         StackTrace.current,
@@ -55,7 +55,7 @@ class SignUpController extends _$SignUpController {
           .signUp(
             email: email,
             password: password,
-            confirmPassword: confirmPassword,
+            passwordConfirmation: passwordConfirmation,
           );
       switch (result) {
         case Ok(value: final session):

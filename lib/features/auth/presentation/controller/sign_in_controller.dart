@@ -44,7 +44,7 @@ class SignInController extends _$SignInController {
       switch (result) {
         case Ok(value: final session):
           state = AsyncValue.data(session);
-          ref.invalidate(authStateProvider);
+          ref.read(authStateProvider.notifier).setAuthenticated();
         case Error(error: final e):
           state = AsyncValue.error(e, StackTrace.current);
       }

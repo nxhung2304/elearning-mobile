@@ -13,7 +13,11 @@ part of 'vertify_otp_controller.dart';
 final vertifyOtpControllerProvider = VertifyOtpControllerProvider._();
 
 final class VertifyOtpControllerProvider
-    extends $NotifierProvider<VertifyOtpController, AsyncValue<void>> {
+    extends
+        $NotifierProvider<
+          VertifyOtpController,
+          AsyncValue<ResetPasswordModel?>
+        > {
   VertifyOtpControllerProvider._()
     : super(
         from: null,
@@ -33,28 +37,39 @@ final class VertifyOtpControllerProvider
   VertifyOtpController create() => VertifyOtpController();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<void> value) {
+  Override overrideWithValue(AsyncValue<ResetPasswordModel?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<void>>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<ResetPasswordModel?>>(
+        value,
+      ),
     );
   }
 }
 
 String _$vertifyOtpControllerHash() =>
-    r'1c404567b58573f04a8a8b1ff5aa6b671d0541d7';
+    r'94d41c2229e3fa39a320a1b71ed0bb510395821b';
 
-abstract class _$VertifyOtpController extends $Notifier<AsyncValue<void>> {
-  AsyncValue<void> build();
+abstract class _$VertifyOtpController
+    extends $Notifier<AsyncValue<ResetPasswordModel?>> {
+  AsyncValue<ResetPasswordModel?> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<void>, AsyncValue<void>>;
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<ResetPasswordModel?>,
+              AsyncValue<ResetPasswordModel?>
+            >;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<void>, AsyncValue<void>>,
-              AsyncValue<void>,
+              AnyNotifier<
+                AsyncValue<ResetPasswordModel?>,
+                AsyncValue<ResetPasswordModel?>
+              >,
+              AsyncValue<ResetPasswordModel?>,
               Object?,
               Object?
             >;
