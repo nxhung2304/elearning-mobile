@@ -6,5 +6,7 @@ class AppPath {
   static const String signUp = '/sign-up';
   static const String forgotPassword = '/forgot-password';
   static const String vertifyOtp = '/vertify-otp';
+  static const String resetPassword = '/reset-password';
+
   static const String splash = '/splash';
 }

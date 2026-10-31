@@ -33,6 +33,10 @@ GoRouter goRouter(Ref ref) {
 
 String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
   if (authState.isLoading) {
+    if (authState.hasValue) {
+      return null;
+    }
+
     return location == AppPath.splash ? null : AppPath.splash;
   }
 
@@ -41,7 +45,8 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
         location == AppPath.signIn ||
         location == AppPath.signUp ||
         location == AppPath.forgotPassword ||
-        location == AppPath.vertifyOtp;
+        location == AppPath.vertifyOtp ||
+        location == AppPath.resetPassword;
     return isOnAuthGate ? null : AppPath.signIn;
   }
 
@@ -50,7 +55,8 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
         location == AppPath.signIn ||
         location == AppPath.signUp ||
         location == AppPath.forgotPassword ||
-        location == AppPath.vertifyOtp;
+        location == AppPath.vertifyOtp ||
+        location == AppPath.resetPassword;
     final shouldGoHome = isOnAuthGate || location == AppPath.splash;
     return shouldGoHome ? AppPath.home : null;
   }
@@ -59,6 +65,7 @@ String? _resolveRedirect(AsyncValue<AuthStatus> authState, String location) {
       location == AppPath.signIn ||
       location == AppPath.signUp ||
       location == AppPath.forgotPassword ||
-      location == AppPath.vertifyOtp;
+      location == AppPath.vertifyOtp ||
+      location == AppPath.resetPassword;
   return isOnAuthGate ? null : AppPath.signIn;
 }
