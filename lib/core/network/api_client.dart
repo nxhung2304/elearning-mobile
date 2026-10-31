@@ -3,6 +3,7 @@ import 'package:elearning_mobile/app/logger/app_logger.dart';
 import 'package:elearning_mobile/core/config/env_config.dart';
 import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/core/exceptions/network_exception.dart';
+import 'package:elearning_mobile/core/exceptions/reset_token_exception.dart';
 import 'package:elearning_mobile/core/exceptions/unauthorized_exception.dart';
 import 'package:elearning_mobile/core/exceptions/validation_exception.dart';
 import 'package:elearning_mobile/core/network/interceptors/auth_interceptor.dart';
@@ -45,7 +46,7 @@ class ApiClient {
     if (kDebugMode) {
       _dio.interceptors.add(
         LogInterceptor(
-          request: true,
+          request: false,
           requestHeader: false,
           requestBody: true,
           responseHeader: false,
@@ -134,9 +135,16 @@ class ApiClient {
     }
 
     if (statusCode == 422) {
+      final data = e.response?.data;
+      final code = data['code'] as String?;
+
+      if (ResetTokenException.supports(code: code)) {
+        return ResetTokenException(code: code!);
+      }
+
       return ValidationException(
-        _extractErrors(e.response?.data),
-        remainingAttempts: _extractRemainingAttempts(e.response?.data),
+        _extractErrors(data),
+        remainingAttempts: _extractRemainingAttempts(data),
       );
     }
 
