@@ -12,8 +12,8 @@
 - [x] Login
 - [x] Auto refresh token
 - [x] Forgot password
-- [ ] Vertify code
-- [ ] Reset password
+- [x] Vertify code
+- [x] Reset password
 
 ## 3. Course browsing
 - [ ] Home / Course list (filter: category, level, search)
