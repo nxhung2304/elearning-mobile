@@ -9,6 +9,7 @@ import 'package:elearning_mobile/features/auth/presentation/controller/reset_pas
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_line_text_field.dart';
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_mini_link.dart';
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_password_strength_meter.dart';
+import 'package:elearning_mobile/shared/widgets/loading/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -88,125 +89,129 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     return Scaffold(
       backgroundColor: AppColors.paper,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(26, 28, 26, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () => context.canPop()
-                    ? context.pop()
-                    : context.go(AppPath.vertifyOtp),
-                child: Text(
-                  '← Quay lại',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.inkSoft,
+        child: LoadingOverlay(
+          isLoading: resetPasswordState.isLoading,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(26, 28, 26, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () => context.canPop()
+                      ? context.pop()
+                      : context.go(AppPath.vertifyOtp),
+                  child: Text(
+                    '← Quay lại',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.inkSoft,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 22),
-              Text(
-                'Đặt mật khẩu mới',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.ink,
-                  height: 1.25,
+                const SizedBox(height: 22),
+                Text(
+                  'Đặt mật khẩu mới',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.ink,
+                    height: 1.25,
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 8),
-              Text(
-                'Mật khẩu mới phải khác với mật khẩu cũ.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.inkSoft,
-                  height: 1.55,
+                const SizedBox(height: 8),
+                Text(
+                  'Mật khẩu mới phải khác với mật khẩu cũ.',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.inkSoft,
+                    height: 1.55,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-              const SizedBox(height: 22),
-              AuthLineTextField(
-                label: 'Mật khẩu mới',
-                controller: passwordController,
-                obscureText: _obscurePassword,
-                onChanged: _onPasswordChanged,
-                errorText: _passwordError,
-              ),
-              const SizedBox(height: 8),
-              AuthPasswordStrengthMeter(strength: _passwordStrength),
-              const SizedBox(height: 22),
-              AuthLineTextField(
-                label: 'Xác nhận mật khẩu mới',
-                controller: passwordConfirmationController,
-                obscureText: _obscurePassword,
-                onChanged: _onConfirmPasswordChanged,
-                errorText: _passwordConfirmationError,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                const SizedBox(height: 30),
+                const SizedBox(height: 22),
+                AuthLineTextField(
+                  label: 'Mật khẩu mới',
+                  controller: passwordController,
+                  obscureText: _obscurePassword,
+                  onChanged: _onPasswordChanged,
+                  errorText: _passwordError,
+                ),
+                const SizedBox(height: 8),
+                AuthPasswordStrengthMeter(strength: _passwordStrength),
+                const SizedBox(height: 22),
+                AuthLineTextField(
+                  label: 'Xác nhận mật khẩu mới',
+                  controller: passwordConfirmationController,
+                  obscureText: _obscurePassword,
+                  onChanged: _onConfirmPasswordChanged,
+                  errorText: _passwordConfirmationError,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() => _obscurePassword = !_obscurePassword);
+                        },
+                        child: AuthMiniLink(
+                          text: _obscurePassword ? 'Hiện' : 'Ẩn',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 22),
+                Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() => _obscurePassword = !_obscurePassword);
-                      },
-                      child: AuthMiniLink(
-                        text: _obscurePassword ? 'Hiện' : 'Ẩn',
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.ink,
+                          foregroundColor: AppColors.paper,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        onPressed: resetPasswordState.isLoading
+                            ? null
+                            : () => _onResetPasswordPressed(
+                                resetPasswordController:
+                                    resetPasswordController,
+                                resetPasswordToken: widget.resetPasswordToken,
+                                password: passwordController.text,
+                                passwordConfirmation:
+                                    passwordConfirmationController.text,
+                              ),
+                        child: const Text(
+                          'Đặt lại mật khẩu',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: -7,
+                      right: 14,
+                      child: Transform.rotate(
+                        angle: 8 * pi / 180,
+                        child: Container(
+                          width: 18,
+                          height: 18,
+                          color: AppColors.highlighter,
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 22),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.ink,
-                        foregroundColor: AppColors.paper,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      onPressed: resetPasswordState.isLoading
-                          ? null
-                          : () => _onResetPasswordPressed(
-                              resetPasswordController: resetPasswordController,
-                              resetPasswordToken: widget.resetPasswordToken,
-                              password: passwordController.text,
-                              passwordConfirmation:
-                                  passwordConfirmationController.text,
-                            ),
-                      child: const Text(
-                        'Đặt lại mật khẩu',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: -7,
-                    right: 14,
-                    child: Transform.rotate(
-                      angle: 8 * pi / 180,
-                      child: Container(
-                        width: 18,
-                        height: 18,
-                        color: AppColors.highlighter,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

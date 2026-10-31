@@ -8,6 +8,7 @@ import 'package:elearning_mobile/core/theme/app_colors.dart';
 import 'package:elearning_mobile/features/auth/presentation/controller/forgot_password_controller.dart';
 import 'package:elearning_mobile/features/auth/presentation/controller/vertify_otp_controller.dart';
 import 'package:elearning_mobile/features/auth/presentation/widgets/auth_mini_link.dart';
+import 'package:elearning_mobile/shared/widgets/loading/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -136,143 +137,146 @@ class _VertifyOtpScreenState extends ConsumerState<VertifyOtpScreen> {
     return Scaffold(
       backgroundColor: AppColors.paper,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(26, 28, 26, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () => context.canPop()
-                    ? context.pop()
-                    : context.go(AppPath.signIn),
-                child: Text(
-                  '← Quay lại',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.inkSoft,
+        child: LoadingOverlay(
+          isLoading: vertifyOtpState.isLoading,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(26, 28, 26, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () => context.canPop()
+                      ? context.pop()
+                      : context.go(AppPath.signIn),
+                  child: Text(
+                    '← Quay lại',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.inkSoft,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 22),
-              Text(
-                'Nhập mã xác nhận',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.ink,
-                  height: 1.25,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Chúng tôi đã gửi mã gồm 6 chữ số đến ${widget.email}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.inkSoft,
-                  height: 1.55,
-                ),
-              ),
-              const SizedBox(height: 30),
-              Row(
-                children: [
-                  for (var index = 0; index < _otpLength; index++) ...[
-                    if (index > 0) const SizedBox(width: 10),
-                    _buildOtpBox(index),
-                  ],
-                ],
-              ),
-              const SizedBox(height: 8),
-              if (_isOtpExpired)
+                const SizedBox(height: 22),
                 Text(
-                  'Mã OTP đã hết hạn. Vui lòng gửi lại mã mới.',
-                  style: TextStyle(fontSize: 12, color: AppColors.inkSoft),
-                )
-              else
-                Text.rich(
-                  TextSpan(
-                    text: 'Mã hết hạn sau ',
-                    children: [
-                      TextSpan(
-                        text: _formattedTime,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.ink,
+                  'Nhập mã xác nhận',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.ink,
+                    height: 1.25,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Chúng tôi đã gửi mã gồm 6 chữ số đến ${widget.email}',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.inkSoft,
+                    height: 1.55,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  children: [
+                    for (var index = 0; index < _otpLength; index++) ...[
+                      if (index > 0) const SizedBox(width: 10),
+                      _buildOtpBox(index),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 8),
+                if (_isOtpExpired)
+                  Text(
+                    'Mã OTP đã hết hạn. Vui lòng gửi lại mã mới.',
+                    style: TextStyle(fontSize: 12, color: AppColors.inkSoft),
+                  )
+                else
+                  Text.rich(
+                    TextSpan(
+                      text: 'Mã hết hạn sau ',
+                      children: [
+                        TextSpan(
+                          text: _formattedTime,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.ink,
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: TextStyle(fontSize: 11.5, color: AppColors.inkSoft),
+                  ),
+                if (_remainingAttempts != null && !_isOtpExpired) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    'Còn $_remainingAttempts lần thử.',
+                    style: TextStyle(fontSize: 11.5, color: AppColors.brick),
+                  ),
+                ],
+                const SizedBox(height: 30),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.ink,
+                          foregroundColor: AppColors.paper,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        onPressed:
+                            _canConfirmOtp &&
+                                !vertifyOtpState.isLoading &&
+                                !isResendingOtp
+                            ? _onConfirmOtpPressed
+                            : null,
+                        child: const Text(
+                          'Xác nhận',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                  style: TextStyle(fontSize: 11.5, color: AppColors.inkSoft),
+                    ),
+                    Positioned(
+                      top: -7,
+                      right: 14,
+                      child: Transform.rotate(
+                        angle: 8 * pi / 180,
+                        child: Container(
+                          width: 18,
+                          height: 18,
+                          color: AppColors.highlighter,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              if (_remainingAttempts != null && !_isOtpExpired) ...[
-                const SizedBox(height: 6),
-                Text(
-                  'Còn $_remainingAttempts lần thử.',
-                  style: TextStyle(fontSize: 11.5, color: AppColors.brick),
+                const SizedBox(height: 20),
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 13, color: AppColors.inkSoft),
+                      children: [
+                        TextSpan(text: 'Chưa nhận được mã? '),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: AuthMiniLink(
+                            text: 'Gửi lại',
+                            onTap: () =>
+                                _onResendOtpPressed(forgotPasswordController),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
-              const SizedBox(height: 30),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.ink,
-                        foregroundColor: AppColors.paper,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                      onPressed:
-                          _canConfirmOtp &&
-                              !vertifyOtpState.isLoading &&
-                              !isResendingOtp
-                          ? _onConfirmOtpPressed
-                          : null,
-                      child: const Text(
-                        'Xác nhận',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: -7,
-                    right: 14,
-                    child: Transform.rotate(
-                      angle: 8 * pi / 180,
-                      child: Container(
-                        width: 18,
-                        height: 18,
-                        color: AppColors.highlighter,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(fontSize: 13, color: AppColors.inkSoft),
-                    children: [
-                      TextSpan(text: 'Chưa nhận được mã? '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: AuthMiniLink(
-                          text: 'Gửi lại',
-                          onTap: () =>
-                              _onResendOtpPressed(forgotPasswordController),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
