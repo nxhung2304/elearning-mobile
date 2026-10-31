@@ -16,11 +16,9 @@ class SignOutController extends _$SignOutController {
 
     try {
       await ref.read(authRepositoryProvider).signOut();
-
-      if (!ref.mounted) return;
+      ref.read(authStateProvider.notifier).setUnauthenticated();
 
       state = AsyncValue.data(null);
-      ref.invalidate(authStateProvider);
     } catch (e, st) {
       if (!ref.mounted) return;
 

@@ -41,7 +41,7 @@ final class SignOutControllerProvider
   }
 }
 
-String _$signOutControllerHash() => r'67a28f134c487ab9d5c6c82588795b5d2a759562';
+String _$signOutControllerHash() => r'77e7c01b618599d23cbe090ffb03a81d2b7f3e87';
 
 abstract class _$SignOutController extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();

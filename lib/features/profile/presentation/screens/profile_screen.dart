@@ -1,5 +1,6 @@
 import 'package:elearning_mobile/core/exceptions/app_exception.dart';
 import 'package:elearning_mobile/features/profile/presentation/controller/sign_out_controller.dart';
+import 'package:elearning_mobile/shared/widgets/loading/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,16 +22,25 @@ class ProfileScreen extends ConsumerWidget {
       );
     });
     return Scaffold(
-      body: Column(
-        children: [
-          const Text('Profile screen'),
-          ElevatedButton(
-            onPressed: signOutState.isLoading
-                ? null
-                : () => ref.read(signOutControllerProvider.notifier).signOut(),
-            child: const Text('Sign out'),
-          ),
-        ],
+      body: LoadingOverlay(
+        isLoading: signOutState.isLoading,
+        child: Column(
+          children: [
+            const Text('Profile screen'),
+            Expanded(
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: signOutState.isLoading
+                      ? null
+                      : () => ref
+                            .read(signOutControllerProvider.notifier)
+                            .signOut(),
+                  child: const Text('Sign out'),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
