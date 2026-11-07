@@ -1,0 +1,39 @@
+:root {
+  --ink: #15223A;
+  --ink-soft: #5B6477;
+  --paper: #F4F4EF;
+  --paper-line: #D8D7CC;
+  --highlighter: #FFC93D;
+  --teal: #1F6F63;
+  --brick: #AE2E24;
+
+  --sand-tint: color-mix(in srgb, var(--paper-line) 50%, var(--paper));
+  --teal-tint: color-mix(in srgb, var(--teal) 14%, var(--paper));
+  --ink-tint: color-mix(in srgb, var(--ink) 8%, var(--paper));
+
+  --overlay: rgba(0, 0, 0, 0.5);
+
+  --font-family: system-ui, Roboto, -apple-system, sans-serif;
+
+  --text-caption: 11.5px;
+  --text-small: 12.5px;
+  --text-body-small: 13px;
+  --text-label: 14px;
+  --text-body: 15px;
+
+  --radius: 4px;
+
+  --border-thin: 1.4px;
+  --underline: 1.5px;
+  --underline-active: 2px;
+
+  --screen-pad-x: 26px;
+  --screen-pad-top: 28px;
+  --screen-pad-bottom: 24px;
+  --gap-field: 22px;
+  --gap-heading: 8px;
+  --btn-pad-y: 15px;
+  --btn-outline-pad-y: 13px;
+  --mark-size: 18px;
+  --mark-angle: 8deg;
+}

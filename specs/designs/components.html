@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Components — Elearning Mobile</title>
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="components.css" />
+</head>
+<body>
+<div class="screen">
+  <p class="section-title">Ô nhập (AuthLineTextField)</p>
+  <div class="field" id="email-field">
+    <label>Email</label>
+    <input class="line-input" id="email" value="a@b.c" />
+    <div class="error-text">Email không hợp lệ</div>
+  </div>
+  <div class="field">
+    <label>Mật khẩu</label>
+    <input class="line-input" id="pw" type="password" value="hunghung" />
+    <div class="row"><button class="mini-link" id="toggle-pw">Hiện</button><button class="mini-link">Quên mật khẩu?</button></div>
+  </div>
+  <button class="mini-link" id="toggle-error">Bật / tắt lỗi ở ô email</button>
+
+  <p class="section-title">Nút chính (sign in) và nút viền (AuthOutlineButton)</p>
+  <button class="btn" id="submit">Đăng nhập</button>
+  <br />
+  <button class="btn" disabled>Đăng nhập (đang tải)</button>
+  <div style="height:26px"></div>
+  <div class="divider-text">hoặc</div>
+  <div style="height:26px"></div>
+  <button class="btn-outline">Google</button>
+
+  <p class="section-title">Thanh độ mạnh mật khẩu (AuthPasswordStrengthMeter)</p>
+  <div class="strength" id="meter"><span class="bar on"></span><span class="bar on"></span><span class="bar"></span><span class="bar"></span></div>
+  <p class="hint">Tối thiểu 8 ký tự, có chữ hoa và số.</p>
+  <button class="mini-link" id="cycle-strength">Đổi mức</button>
+
+  <p class="section-title">Lớp phủ đang tải (LoadingOverlay)</p>
+  <button class="btn-outline" id="show-overlay">Hiện lớp phủ 1,5 giây</button>
+</div>
+<div class="overlay" id="overlay"><div class="spinner"></div></div>
+<script>
+  const emailField = document.getElementById('email-field');
+  document.getElementById('toggle-error').onclick = () => emailField.classList.toggle('has-error');
+  const pw = document.getElementById('pw');
+  const togglePw = document.getElementById('toggle-pw');
+  togglePw.onclick = () => {
+    const hidden = pw.type === 'password';
+    pw.type = hidden ? 'text' : 'password';
+    togglePw.textContent = hidden ? 'Ẩn' : 'Hiện';
+  };
+  const bars = document.querySelectorAll('#meter .bar');
+  let level = 2;
+  document.getElementById('cycle-strength').onclick = () => {
+    level = (level + 1) % 5;
+    bars.forEach((bar, i) => bar.classList.toggle('on', i < level));
+  };
+  const overlay = document.getElementById('overlay');
+  document.getElementById('show-overlay').onclick = () => {
+    overlay.classList.add('on');
+    setTimeout(() => overlay.classList.remove('on'), 1500);
+  };
+</script>
+</body>
+</html>
