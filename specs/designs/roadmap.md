@@ -12,8 +12,8 @@ Thứ tự vẽ wireframe cho các màn còn lại, lấy từ `specs/story.md`.
 ## Đã có wireframe
 | Nhóm | Thư mục | Ghi chú |
 |---|---|---|
-| Auth (splash, đăng nhập, đăng ký, quên mật khẩu, xác thực mã, đặt lại mật khẩu, thành công) | `auth-flow/` | Còn dùng font Lora / IBM Plex Sans, lệch app (chưa sửa) |
-| Home / Course list | `course-browsing/` | 6 màn: danh sách, đang tải, trống, không có kết quả, lỗi, lỗi tải thêm |
+| Auth (splash, đăng nhập, đăng ký, quên mật khẩu, xác thực mã, đặt lại mật khẩu, thành công) | `auth-flow/` | Đã khớp style app (font hệ thống, link `tokens.css`) |
+| Home / Course list | `course-browsing/` | 11 màn: danh sách, đang tải, trống, không có kết quả, lỗi, lỗi tải thêm, chọn cấp độ, đang lọc, kéo làm mới, đang gõ tìm kiếm, kéo làm mới bị lỗi |
 
 ## Cần vẽ (theo thứ tự trong story)
 | # | Màn | Trạng thái cần vẽ (đề xuất) |

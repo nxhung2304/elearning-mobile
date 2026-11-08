@@ -260,3 +260,6 @@
 .tabbar svg { width: 24px; height: 24px; fill: currentColor; }
 .tabbar .tab.on { color: var(--ink); font-weight: 600; }
 .tabbar .tab.on .pill { background: var(--ink-tint); }
+
+.toast { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.toast .action { flex-shrink: 0; padding: 14px 4px 14px 12px; margin: -14px -4px -14px 0; font-weight: 600; text-decoration: underline; }
